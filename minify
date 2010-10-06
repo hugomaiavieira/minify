@@ -105,7 +105,7 @@ process()
     echo ""
 
     Z=0
-    for arquivo in $(cat /tmp/arquivos) terceiros
+    for arquivo in $(cat /tmp/arquivos)
     do
       java -jar $FOLDER/third_party/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
       echo $arquivo
