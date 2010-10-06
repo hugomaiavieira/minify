@@ -1,7 +1,7 @@
 #Minify
 
-Minifica arquivos arquivos __css__ (__.css__) e __javascript__ (__.js__)
-utilizando o [YUI Compressor] (http://developer.yahoo.com/yui/compressor/).
+Minifica arquivos arquivos _css_ (_.css_) e _javascript_ (_.js_) utilizando o
+[YUI Compressor](http://developer.yahoo.com/yui/compressor/).
 
 Minificar é o processo de remover caracteres desnecessários do código fonte, sem
 modificar sua funcionalidade. Com isso, seus arquivos ficam menores, carregam
@@ -15,12 +15,13 @@ deixa o arquivo praticamente ilegível, e assim, imanutenível.
 
 ###Java
 
-O [YUI Compressor] (http://developer.yahoo.com/yui/compressor/) é que faz a
-minificação. O minify apenas roda o __YUI Compressor__ para todos os arquivos
-__css__ e __javascript__ dos diretórios.
-O __YUI Compressor__ vem congelado junto com este pacote. Contudo, ele é
-desenvolvido em java e assim, ter o __java__ instalado é obrigatório para
-executar o __minify__.
+O [YUI Compressor](http://developer.yahoo.com/yui/compressor/) é que faz a
+minificação. O minify apenas roda o _YUI Compressor_ para todos os arquivos
+_css_ e _javascript_ dos diretórios.
+
+O _YUI Compressor_ vem congelado junto com este pacote. Contudo, ele é
+desenvolvido em java e assim, ter o _java_ instalado é obrigatório para
+executar o _minify_.
 
 
 ##USO
@@ -31,9 +32,8 @@ executar o __minify__.
 ###DIRETÓRIOS:
 
 Podem ser passados vários diretórios, separados por espaço. Para cada diretório
-passado como parâmetro é feita uma busca por arquivos __css__ e
-__javascript__. Os arquivos encontrados são então substituídos por suas
-versões minificadas.
+passado como parâmetro é feita uma busca por arquivos _css_ e _javascript_. Os
+arquivos encontrados são então substituídos por suas versões minificadas.
 
 
 ###OPÇÕES:

@@ -56,6 +56,7 @@ $(basename "$0") - Minifica arquivos arquivos css (.css) e javascript (.js) util
          porque a minificação deixa o arquivo praticamente ilegível, e assim,
          imanutenível.
 
+
 USO: "$0" DIRETÓRIOS [OPÇÕES]
 
 
@@ -104,9 +105,9 @@ process()
     echo ""
 
     Z=0
-    for arquivo in $(cat /tmp/arquivos)
+    for arquivo in $(cat /tmp/arquivos) terceiros
     do
-      java -jar ../$FOLDER/utils/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
+      java -jar $FOLDER/third_party/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
       echo $arquivo
       Z=$((Z+1))
     done
