@@ -1,0 +1,156 @@
+#!/bin/bash
+#
+# minify - Minifica arquivos arquivos css (.css) e javascript (.js) utilizando o
+#          YUI Compressor (http://developer.yahoo.com/yui/compressor/).
+#
+#          Execute esse script apenas em ambiente de produção, preferencialmente
+#          ao fazer o deploy automatizado da aplicação. Deve ser dessa forma
+#          porque a minificação deixa o arquivo praticamente ilegível, e assim,
+#          imanutenível.
+#
+# ------------------------------------------------------------------------------
+#
+# The MIT License
+#
+# Copyright (c) 2010 Hugo Henriques Maia Vieira
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+# ------------------------------------------------------------------------------
+#
+# Histórico:
+#
+# v1.0, 05-10-2010, Hugo Maia:
+# - Versão inicial.
+#
+# ------------------------------------------------------------------------------
+#
+
+#======================= Variáveis e chaves ==============================
+
+# Mandinga para pegar o diretório onde o script foi executado
+FOLDER=$(cd $(dirname $0); pwd -P)
+
+MENSAGEM_USO="
+$(basename "$0") - Minifica arquivos arquivos css (.css) e javascript (.js) utilizando o
+         YUI Compressor (http://developer.yahoo.com/yui/compressor/).
+
+         Execute esse script apenas em ambiente de produção, preferencialmente
+         ao fazer o deploy automatizado da aplicação. Deve ser dessa forma
+         porque a minificação deixa o arquivo praticamente ilegível, e assim,
+         imanutenível.
+
+USO: "$0" DIRETÓRIOS [OPÇÕES]
+
+
+DIRETÓRIOS:
+
+    Podem ser passados vários diretórios, separados por espaço. Para cada
+    diretório passado como parâmetro é feita uma busca por arquivos css e
+    javascript. Os arquivos encontrados são então substituídos por suas versões
+    minificadas.
+
+
+OPÇÕES:
+
+    -h, --help      Mostra esta tela de ajuda e sai.
+    -v, --version   Mostra a versão do programa e sai.
+
+
+EXEMPLO:
+
+    $ ls ~/diretorio
+    README.txt frontend.css base.css cidades.js
+
+    $ "$0" ~/diretorio
+
+    $ ls ~/diretorio
+    README.txt base.css base-min.css cidades.js cidades-min.js up.css up-min.css
+"
+
+MENSAGEM_ERRO="
+USO: "$0" DIRETÓRIOS [OPÇÕES]
+Utilize a opção --help para mais informações.
+"
+
+#========================= Processamento =================================
+
+process()
+{
+  diretorio=$1
+
+  find $diretorio -regextype posix-egrep -regex '.*\.(css|js)$' > /tmp/arquivos
+
+  if [ "$diretorio" ]
+  then
+    echo ""
+    echo "Minificando arquivos a partir de $diretorio"
+    echo ""
+
+    Z=0
+    for arquivo in $(cat /tmp/arquivos)
+    do
+      java -jar ../$FOLDER/utils/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
+      echo $arquivo
+      Z=$((Z+1))
+    done
+
+    echo ""
+    echo "Foram alterados $Z arquivos a partir de $diretorio"
+    echo ""
+  fi
+}
+
+#=========== Tratamento de opções de linha de comando ====================
+
+if [ -z "$1" ]
+then
+  echo "$MENSAGEM_ERRO"
+  exit 1
+fi
+
+while test -n "$1"
+do
+  case "$1" in
+
+    -v | --version)
+      echo -n $(basename "$0" .sh) "- "
+      #Extrai a versão diretamente do cabeçalho do programa
+      grep '^# v' "$0" | tail -1 | cut -d , -f 1 | tr -d \# | tr -d [:blank:]
+      exit 0 ;;
+
+    -h | --help) echo "$MENSAGEM_USO"; exit 0 ;;
+
+    *)
+      if [ -d $1 ]
+      then
+        process $1
+        test -n "$2" && echo "----------"
+      else
+        echo ""
+        echo "$1 não é um diretório."
+        echo "$MENSAGEM_ERRO"
+        exit 1
+      fi ;;
+
+  esac
+  shift
+done
+exit 0
+
