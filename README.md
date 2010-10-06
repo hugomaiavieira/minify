@@ -20,7 +20,7 @@ minificação. O minify apenas roda o _YUI Compressor_ para todos os arquivos
 _css_ e _javascript_ dos diretórios.
 
 O _YUI Compressor_ vem congelado junto com este pacote. Contudo, ele é
-desenvolvido em java e assim, ter o _java_ instalado é obrigatório para
+desenvolvido em _java_. Dessa forma, ter o _java_ instalado é obrigatório para
 executar o _minify_.
 
 
