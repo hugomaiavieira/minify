@@ -96,26 +96,28 @@ process()
 {
   diretorio=$1
 
+  if [[ ! $diretorio =~ /$ ]]
+  then
+    diretorio="$diretorio/"
+  fi
+
   find $diretorio -regextype posix-egrep -regex '.*\.(css|js)$' > /tmp/arquivos
 
-  if [ "$diretorio" ]
-  then
-    echo ""
-    echo "Minificando arquivos a partir de $diretorio"
-    echo ""
+  echo ""
+  echo "Minificando arquivos a partir de $diretorio"
+  echo ""
 
-    Z=0
-    for arquivo in $(cat /tmp/arquivos)
-    do
-      java -jar $FOLDER/third_party/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
-      echo $arquivo
-      Z=$((Z+1))
-    done
+  Z=0
+  for arquivo in $(cat /tmp/arquivos)
+  do
+    java -jar $FOLDER/third_party/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
+    echo $arquivo
+    Z=$((Z+1))
+  done
 
-    echo ""
-    echo "Foram alterados $Z arquivos a partir de $diretorio"
-    echo ""
-  fi
+  echo ""
+  echo "Foram alterados $Z arquivos a partir de $diretorio"
+  echo ""
 }
 
 #=========== Tratamento de opções de linha de comando ====================
