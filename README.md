@@ -26,7 +26,7 @@ executar o _minify_.
 
 ##USO
 
-    minify DIRETÓRIOS [OPÇÕES]
+    ./minify DIRETÓRIOS [OPÇÕES]
 
 
 ###DIRETÓRIOS:
@@ -45,12 +45,22 @@ arquivos encontrados são então substituídos por suas versões minificadas.
 ##EXEMPLO:
 
     $ ls ~/diretorio
-    README.txt frontend.css base.css cidades.js
+    base.css  cidades.js  frontend.css  outro_diretorio  README.txt
+    $ ls ~/diretorio/outro_diretorio
+    exemplo.css  teste.js  programa.rb
 
-    $ minify ~/diretorio
+    $ ./minify ~/diretorio
 
-    $ ls ~/diretorio
-    README.txt base.css base-min.css cidades.js cidades-min.js up.css up-min.css
+    Minificando arquivos a partir de /home/hugo/diretorio/
+
+    /home/hugo/diretorio/frontend.css
+    /home/hugo/diretorio/outro_diretorio/teste.js
+    /home/hugo/diretorio/outro_diretorio/exemplo.css
+    /home/hugo/diretorio/cidades.js
+    /home/hugo/diretorio/base.css
+
+    Foram alterados 5 arquivos a partir de /home/hugo/diretorio/
+
 
 ##AUTOR
 
