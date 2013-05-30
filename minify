@@ -46,6 +46,7 @@
 
 # Mandinga para pegar o diretório onde o script foi executado
 FOLDER=$(cd $(dirname $0); pwd -P)
+YUICOMPRESSOR="$FOLDER/third-party/yuicompressor-2.4.7.jar"
 
 MENSAGEM_USO="
 $(basename "$0") - Minifica arquivos arquivos css (.css) e javascript (.js) utilizando o
@@ -94,66 +95,16 @@ Utilize a opção --help para mais informações.
 
 process()
 {
-  diretorio=$1
+  index=$1
 
-  if [[ ! $diretorio =~ /$ ]]
-  then
-    diretorio="$diretorio/"
-  fi
 
-  find $diretorio -regextype posix-egrep -regex '.*\.(css|js)$' > /tmp/arquivos
+  grep -o "js.*js" $index > /tmp/js
+  grep -o "css.*css" $index > /tmp/css
 
-  echo ""
-  echo "Minificando arquivos a partir de $diretorio"
-  echo ""
-
-  Z=0
   for arquivo in $(cat /tmp/arquivos)
   do
-    java -jar $FOLDER/third_party/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar $arquivo -o $arquivo
-    echo $arquivo
-    Z=$((Z+1))
+    java -jar $YUICOMPRESSOR $arquivo -o $arquivo
   done
-
-  echo ""
-  echo "Foram alterados $Z arquivos a partir de $diretorio"
-  echo ""
 }
 
-#=========== Tratamento de opções de linha de comando ====================
-
-if [ -z "$1" ]
-then
-  echo "$MENSAGEM_ERRO"
-  exit 1
-fi
-
-while test -n "$1"
-do
-  case "$1" in
-
-    -v | --version)
-      echo -n $(basename "$0" .sh) "- "
-      #Extrai a versão diretamente do cabeçalho do programa
-      grep '^# v' "$0" | tail -1 | cut -d , -f 1 | tr -d \# | tr -d [:blank:]
-      exit 0 ;;
-
-    -h | --help) echo "$MENSAGEM_USO"; exit 0 ;;
-
-    *)
-      if [ -d $1 ]
-      then
-        process $1
-        test -n "$2" && echo "----------"
-      else
-        echo ""
-        echo "$1 não é um diretório."
-        echo "$MENSAGEM_ERRO"
-        exit 1
-      fi ;;
-
-  esac
-  shift
-done
-exit 0
-
+process
